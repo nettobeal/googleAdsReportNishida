@@ -1,0 +1,1398 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Relatório Google Ads</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: #e8e8e8;
+    font-family: Helvetica, Arial, sans-serif;
+    color: #1A1A1A;
+    font-size: 11px;
+}
+
+.page {
+    width: 794px;
+    min-height: 1123px;
+    background: white;
+    margin: 24px auto;
+    position: relative;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.13);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 28px 12px;
+    border-bottom: 1px solid #DDDDDD;
+}
+
+.header img {
+    height: 32px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    display: flex;
+    justify-content: space-between;
+
+    padding: 10px 28px;
+
+    border-top: 1px solid #DDDDDD;
+
+    font-size: 9px;
+    color: #666666;
+}
+
+.content {
+    padding: 24px 28px 80px;
+}
+
+.report-title {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.report-subtitle {
+    color: #666666;
+    margin-top: 4px;
+}
+
+.red-rule {
+    border: none;
+    border-top: 2px solid #CC0000;
+    margin: 16px 0 20px;
+}
+
+.sec-bar {
+    display: flex;
+    align-items: center;
+    background: #F5F5F5;
+    border: 1px solid #CC0000;
+    border-radius: 3px;
+    padding: 5px 10px;
+    font-size: 10px;
+    font-weight: bold;
+    color: #CC0000;
+    margin-bottom: 10px;
+}
+
+.sec-bar.inverted {
+    background: #CC0000;
+    color: white;
+}
+
+.text-box {
+    background: #F5F5F5;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-size: 10px;
+    line-height: 1.6;
+    margin-bottom: 14px;
+}
+
+.sec-title {
+    font-size: 11px;
+    font-weight: bold;
+    color: #CC0000;
+    margin: 14px 0 6px;
+}
+
+.body-text {
+    font-size: 10px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.cards {
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+
+    gap: 10px;
+
+    margin-bottom: 24px;
+}
+
+.card {
+
+    border: 1px solid #DDDDDD;
+
+    border-radius: 6px;
+
+    padding: 14px;
+}
+
+.card.highlight {
+
+    border-color: #CC0000;
+}
+
+.card-label {
+
+    font-size: 9px;
+
+    color: #666666;
+
+    margin-bottom: 6px;
+}
+
+.card-value {
+
+    font-size: 22px;
+
+    font-weight: bold;
+}
+
+.card-sub {
+    font-size: 8px;
+    color: #666666;
+    margin-top: 4px;
+}
+
+.big-box {
+    display: flex;
+    background: #F5F5F5;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    margin-bottom: 14px;
+    overflow: hidden;
+}
+
+.big-box-left {
+    min-width: 110px;
+    padding: 16px 14px;
+    border-right: 1px solid #DDDDDD;
+}
+
+.big-box-value {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.big-box-label {
+    font-size: 8px;
+    color: #666666;
+}
+
+.big-box-right {
+    padding: 14px 16px;
+    font-size: 10px;
+    line-height: 1.6;
+    flex: 1;
+}
+
+.data-table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+    font-size: 9px;
+}
+
+.data-table th {
+
+    background: #CC0000;
+
+    color: white;
+
+    padding: 8px;
+
+    text-align: left;
+}
+
+.data-table td {
+
+    border: 1px solid #DDDDDD;
+
+    padding: 6px;
+}
+
+.data-table tr:nth-child(even) {
+
+    background: #F5F5F5;
+}
+
+.footer-rule {
+    border: none;
+    border-top: 1px solid #DDDDDD;
+    margin: 14px 0 8px;
+}
+
+.footer-note {
+    text-align: center;
+    font-size: 9px;
+    color: #666666;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="header">
+
+        <img src="assets/logo_nishida.png">
+
+        <img src="assets/logo_cliente.png">
+
+    </div>
+
+    <div class="content">
+
+        <div class="report-title">
+            Relatório Google Ads
+        </div>
+
+        <div class="report-subtitle">
+            Cliente | 01/04/2026 até 30/04/2026
+        </div>
+
+        <hr class="red-rule">
+
+        <!-- VISÃO GERAL -->
+        <div class="sec-bar">
+            VISÃO GERAL DA CAMPANHA
+        </div>
+
+        <div class="text-box">
+
+            <p>
+                [PLACEHOLDER_RESUMO_GERAL]
+            </p>
+
+            <p>
+                [PLACEHOLDER_CONTEXTO_CAMPANHA]
+            </p>
+
+        </div>
+
+        <!-- CARDS -->
+        <div class="cards">
+
+            <div class="card highlight">
+
+                <div class="card-label">
+                    INVESTIMENTO
+                </div>
+
+                <div class="card-value">
+                    R$ 9.313,92
+                </div>
+
+                <div class="card-sub">
+                    [PLACEHOLDER_INVESTIMENTO]
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <div class="card-label">
+                    IMPRESSÕES
+                </div>
+
+                <div class="card-value">
+                    23.202
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <div class="card-label">
+                    CLIQUES
+                </div>
+
+                <div class="card-value">
+                    810
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <div class="card-label">
+                    CTR
+                </div>
+
+                <div class="card-value">
+                    3,49%
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <div class="card-label">
+                    CPC MÉDIO
+                </div>
+
+                <div class="card-value">
+                    R$ 11,50
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <div class="card-label">
+                    CONVERSÕES
+                </div>
+
+                <div class="card-value">
+                    0
+                </div>
+
+            </div>
+
+            <div class="card highlight">
+
+                <div class="card-label">
+                    CPA
+                </div>
+
+                <div class="card-value">
+                    R$ 0,00
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- BIG BOX -->
+        <div class="big-box">
+
+            <div class="big-box-left">
+
+                <div class="big-box-value">
+                    R$ 0,00
+                </div>
+
+                <div class="big-box-label">
+                    CUSTO POR AQUISIÇÃO
+                </div>
+
+            </div>
+
+            <div class="big-box-right">
+
+                [PLACEHOLDER_ANALISE_CPA]
+
+            </div>
+
+        </div>
+
+        <!-- INSIGHTS -->
+        <div class="sec-title">
+            Insights da Campanha
+        </div>
+
+        <div class="body-text">
+            [PLACEHOLDER_INSIGHTS]
+        </div>
+
+        <div class="body-text">
+            [PLACEHOLDER_OTIMIZACOES]
+        </div>
+
+        <!-- TABELA -->
+        <div class="sec-bar inverted">
+            DESEMPENHO DAS CAMPANHAS
+        </div>
+
+        <table class="data-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Campanha</th>
+                    <th>Impressões</th>
+                    <th>Cliques</th>
+                    <th>CTR</th>
+                    <th>CPC</th>
+                    <th>Conversões</th>
+                    <th>CPA</th>
+                    <th>Custo</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                
+
+                <tr>
+
+                    <td>0 - Pesquisa - Leads - Gruber Contabilidade</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>1 - Toledo - Gruber Contabilidade #2</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>1 - Toledo/Cascavel - Gruber Contabilidade</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>1 - Youtube - Assessoria</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>2 - Aniversário Gruber</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>2 - Toledo/Cascavel - Gruber Contabilidade</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>3 - Gruber Advogados Associados</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>3 - Toledo/Cascavel - Maximizar Cliques</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>4 - Toledo - German Tech Sistemas</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>5 - Cascavel - German Tech Sistemas</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Acorde e saia do automático</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Auto Estima - Aparência</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Burnout</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Calma - na maquiagem tudo tem conserto</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Campanha 1 — PESQUISA | Toledo (+ raio 28 km) - 33,33/dia - 1.000/mês</td>
+                    <td>1.289</td>
+                    <td>90</td>
+                    <td>6,98%</td>
+                    <td>R$ 11,50</td>
+                    <td>0</td>
+                    <td>R$ inf</td>
+                    <td>R$ 1.034,88</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Como atrair dinheiro vídeo completo</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Como emagrecer vídeo completo Lilian</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Como foi minha primeira prisão</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Como reter talentos</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Dicas para gravar vídeos na internet</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Eneagrama</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Esse dia foi muito triste</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Esse é nosso sonho de viagem</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Foi no dia do falecimento da Marilia Mendonça</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Frequência vibracional</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Gruber - Cascavel</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Gruber [01] Captura de Leads</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Gruber [01] Captura de Leads #2</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Gruber [01] Captura de Leads #3</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Gruber [01] Outubro - 23</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Gruber [02] Captura de Leads</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Intercâmbio vídeo completo</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Lei da Atração</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Mauro - Nacional</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Metaverso</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Papel higiênico sujo</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Porco no rolete</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Relacionamento Débora</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Rosana Policial</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Segredos para um relacionamento vídeo completo</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Sexologia</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Sobram vagas de trabalho em Toledo</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Sua casa pode estar doente</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>TL Como chegar ao orgasmo</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>TL Vermelho Monarcas e Abba</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Talk Land - Carência Afetiva - Dedo Podre</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Talk Land - Formação Auto Estima Crianças</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Tchau Ronco</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Truque para parecer mais magra</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Tá maluca mãe</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Universo manda o que pedimos</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Vídeo Personalizado – 2022-10-07 - Amamentação</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Vídeo Personalizado – 2022-10-07 - Poder da mente</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Vídeo Personalizado – 2022-10-24 - Linguagem corporal</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Vídeo Personalizado – 2022-11-18 - Constelação Familiar</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>Vídeo completo Mauro</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>[02] Campanha Envio Formulário de Lead</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>auto conhecimento</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>sexo na menopausa</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+                <tr>
+
+                    <td>É assim que se abre uma espumante</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0,00%</td>
+                    <td>R$ 0,00</td>
+                    <td>0</td>
+                    <td>R$ 0,00</td>
+                    <td>R$ 0,00</td>
+
+                </tr>
+
+                
+
+            </tbody>
+
+        </table>
+
+        <!-- OBSERVAÇÕES -->
+        <div class="sec-title">
+            Observações Estratégicas
+        </div>
+
+        <div class="text-box">
+
+            <p>
+                [PLACEHOLDER_OBSERVACOES]
+            </p>
+
+        </div>
+
+        <!-- PRÓXIMOS PASSOS -->
+        <div class="sec-title">
+            Próximos Passos
+        </div>
+
+        <div class="body-text">
+            [PLACEHOLDER_PROXIMOS_PASSOS]
+        </div>
+
+        <hr class="footer-rule">
+
+        <div class="footer-note">
+            Relatório desenvolvido por Nishida Publicidade
+        </div>
+
+    </div>
+
+    <div class="footer">
+
+        <div>
+            Nishida Publicidade
+        </div>
+
+        <div>
+            Gerado em 08/05/2026 13:02
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
