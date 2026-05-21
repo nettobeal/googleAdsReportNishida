@@ -76,6 +76,7 @@ def _build_contexto(data) -> str:
         return f"R$ {n:,.2f}".replace(',', '#').replace('.', ',').replace('#', '.')
 
     lines = [
+        f"Cliente: {data.client_name or '-'}",
         f"Periodo: {data.period_text or '-'}",
         f"Campanha: {data.campaign or '-'}",
         f"Grupo de anuncios: {data.ad_group or '-'}",

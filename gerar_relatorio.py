@@ -9,12 +9,27 @@ Basta substituir os arquivos em csvs/ e rodar:
 
 from __future__ import annotations
 
+import argparse
+import argparse
 import csv
+import os
 import re
 import sys
-from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
+
+# Carrega .env antes de qualquer leitura de variavel de ambiente.
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv()  # carrega .env do diretorio atual se existir
+except ImportError:
+    pass  # se python-dotenv nao estiver instalado, ignora silenciosamente
 
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
@@ -26,7 +41,9 @@ from reportlab.platypus import (
     Table, TableStyle,
 )
 
+from dados import AdGroup, Keyword, ReportData, Totals
 from ia_analises import AnaliseIA, gerar_analises
+import fonte_google_ads
 
 # ── Diretorios (script-relativos, funcionam em qualquer SO) ─────────────────
 BASE_DIR   = Path(__file__).resolve().parent
@@ -113,68 +130,7 @@ def short_match_type(tipo: str) -> str:
     return tipo or ''
 
 
-@dataclass
-class Keyword:
-    keyword: str
-    match_type: str
-    clicks: int
-    impressions: int
-    ctr_pct: float        # 6.98 (significa 6,98%)
-    avg_cpc: float
-    cost: float
-    conversions: float
-    cost_per_conv: float
-    conv_rate_pct: float
-
-
-@dataclass
-class AdGroup:
-    name: str
-    campaign: str
-    impressions: int
-    clicks: int
-    cost: float
-    conversions: float
-    ctr_pct: float
-    avg_cpc: float
-    cost_per_conv: float
-    conv_rate_pct: float
-
-
-@dataclass
-class Totals:
-    impressions: int = 0
-    clicks: int = 0
-    cost: float = 0.0
-    conversions: float = 0.0
-
-    @property
-    def ctr_pct(self) -> float:
-        return (self.clicks / self.impressions * 100) if self.impressions else 0.0
-
-    @property
-    def avg_cpc(self) -> float:
-        return (self.cost / self.clicks) if self.clicks else 0.0
-
-    @property
-    def conv_rate_pct(self) -> float:
-        return (self.conversions / self.clicks * 100) if self.clicks else 0.0
-
-    @property
-    def cost_per_conv(self) -> float:
-        return (self.cost / self.conversions) if self.conversions else 0.0
-
-
-@dataclass
-class ReportData:
-    period_start: date | None = None
-    period_end: date | None = None
-    period_text: str = ''
-    campaign: str = ''
-    ad_group: str = ''
-    keywords: list[Keyword] = field(default_factory=list)
-    totals: Totals = field(default_factory=Totals)
-    daily_impressions: list[tuple[str, int]] = field(default_factory=list)
+# (As dataclasses Keyword/AdGroup/Totals/ReportData foram movidas para `dados.py`)
 
 
 def load_keywords(path: Path) -> tuple[list[Keyword], str]:
@@ -290,7 +246,7 @@ def find_timeseries_csv() -> Path | None:
     return None
 
 
-def load_report_data() -> ReportData:
+def load_report_data_from_csv() -> ReportData:
     data = ReportData()
 
     kw_path = CSV_DIR / CSV_KEYWORDS
@@ -328,6 +284,29 @@ def load_report_data() -> ReportData:
             f"{data.period_end.strftime('%d/%m/%Y')}"
         )
     return data
+
+
+def load_report_data(client_name: str | None = None) -> ReportData:
+    """
+    Seletor de fonte: prefere Google Ads API se as credenciais estiverem
+    configuradas; caso contrario, cai pra leitura dos CSVs em ./csvs/.
+
+    Forcar manualmente:
+      REPORT_SOURCE=api  -> exige credenciais; erra se faltar
+      REPORT_SOURCE=csv  -> ignora a API mesmo se as credenciais existirem
+    """
+    forced = (os.environ.get('REPORT_SOURCE') or '').strip().lower()
+
+    if forced == 'csv':
+        print("[fonte] forcado para CSV (REPORT_SOURCE=csv)")
+        return load_report_data_from_csv()
+
+    if forced == 'api' or fonte_google_ads.credentials_available():
+        print("[fonte] usando Google Ads API")
+        return fonte_google_ads.load_report_data(client_name=client_name)
+
+    print("[fonte] credenciais Google Ads ausentes - usando CSVs em ./csvs/")
+    return load_report_data_from_csv()
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -803,25 +782,132 @@ def build_story(d: ReportData, generated_on: str, analises: AnaliseIA | None = N
 # 7) ENTRYPOINT
 # ═══════════════════════════════════════════════════════════════════════════
 
-def main() -> int:
-    if not CSV_DIR.exists():
+def _available_clients() -> dict[str, str]:
+    """Retorna {NOME: customer_id} a partir das env vars GOOGLE_ADS_CUSTOMER_ID_*."""
+    prefix = 'GOOGLE_ADS_CUSTOMER_ID_'
+    return {
+        k[len(prefix):]: v
+        for k, v in os.environ.items()
+        if k.startswith(prefix) and v.strip()
+    }
+
+
+def _resolve_customer_id(client_arg: str | None) -> str | None:
+    """
+    Resolve qual customer_id usar e propaga para GOOGLE_ADS_CUSTOMER_ID.
+
+    Ordem de precedencia:
+      1. --client <NOME>           (argumento de CLI)
+      2. REPORT_CLIENT             (env var)
+      3. GOOGLE_ADS_CUSTOMER_ID    (env var direta, ja resolvida)
+
+    Retorna o nome do cliente (ou None se foi via id direto).
+    """
+    raw = client_arg or os.environ.get('REPORT_CLIENT', '').strip()
+    if not raw:
+        if os.environ.get('GOOGLE_ADS_CUSTOMER_ID'):
+            return None
+        return ''  # nenhuma fonte definida (sera tratado depois)
+
+    clients = _available_clients()
+    name = raw.upper().replace('-', '_').replace(' ', '_')
+    if name not in clients:
+        available = ', '.join(sorted(clients)) or '(nenhum)'
+        print(
+            f"[erro] cliente '{raw}' nao encontrado nas variaveis "
+            f"GOOGLE_ADS_CUSTOMER_ID_*.\n"
+            f"        Disponiveis: {available}",
+            file=sys.stderr,
+        )
+        return None
+    os.environ['GOOGLE_ADS_CUSTOMER_ID'] = clients[name]
+    return name
+
+
+def _slugify(s: str) -> str:
+    return re.sub(r'[^A-Za-z0-9._-]+', '_', s).strip('_') or 'cliente'
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(
+        description='Gera o PDF de relatorio Google Ads.',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument(
+        '--client', '-c',
+        help='Nome do cliente (ex.: TANTRA, BRECHO). '
+             'Resolve para GOOGLE_ADS_CUSTOMER_ID_<NOME> do .env.',
+    )
+    parser.add_argument(
+        '--source', choices=['api', 'csv'],
+        help='Forca a fonte de dados.',
+    )
+    parser.add_argument('--start', help='Inicio do periodo (YYYY-MM-DD).')
+    parser.add_argument('--end', help='Fim do periodo (YYYY-MM-DD).')
+    parser.add_argument(
+        '--list-clients', action='store_true',
+        help='Lista clientes disponiveis no .env e sai.',
+    )
+    args = parser.parse_args(argv)
+
+    if args.list_clients:
+        clients = _available_clients()
+        if not clients:
+            print("Nenhum cliente definido. Configure GOOGLE_ADS_CUSTOMER_ID_<NOME> "
+                  "no .env.")
+            return 0
+        print("Clientes disponiveis:")
+        for name, cid in sorted(clients.items()):
+            print(f"  {name:24s} ({cid})")
+        return 0
+
+    # Propaga overrides de CLI para env vars (as fontes leem do env)
+    if args.source:
+        os.environ['REPORT_SOURCE'] = args.source
+    if args.start:
+        os.environ['REPORT_START'] = args.start
+    if args.end:
+        os.environ['REPORT_END'] = args.end
+
+    client_name = _resolve_customer_id(args.client)
+    if client_name is None and not os.environ.get('GOOGLE_ADS_CUSTOMER_ID'):
+        # erro ja foi impresso por _resolve_customer_id
+        return 2
+    if client_name == '':
+        # sem cliente e sem id direto - so funciona pra modo CSV
+        if (os.environ.get('REPORT_SOURCE') or '').lower() != 'csv':
+            clients = _available_clients()
+            print(
+                "[aviso] nenhum cliente especificado.\n"
+                f"        Use --client <NOME> (disponiveis: {', '.join(sorted(clients)) or 'nenhum'}),\n"
+                "        ou --source csv pra usar os CSVs em ./csvs/.",
+                file=sys.stderr,
+            )
+            return 2
+
+    if not CSV_DIR.exists() and (os.environ.get('REPORT_SOURCE') or '').lower() == 'csv':
         print(f"[erro] pasta de CSVs nao encontrada: {CSV_DIR}", file=sys.stderr)
         return 1
 
-    data = load_report_data()
+    data = load_report_data(client_name=client_name or None)
     if not data.keywords:
-        print(f"[erro] nenhuma palavra-chave lida de {CSV_DIR / CSV_KEYWORDS}",
-              file=sys.stderr)
+        print("[erro] nenhuma palavra-chave retornada da fonte", file=sys.stderr)
         return 1
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     today = date.today()
     generated_on = today.strftime('%d/%m/%Y')
 
-    suffix = ''
+    # Nome do arquivo: inclui cliente quando disponivel
+    parts = ['Relatorio_GoogleAds']
+    if client_name:
+        parts.append(_slugify(client_name))
     if data.period_start and data.period_end:
-        suffix = f"_{data.period_start.strftime('%Y%m%d')}-{data.period_end.strftime('%Y%m%d')}"
-    output_path = OUTPUT_DIR / f'Relatorio_GoogleAds{suffix}.pdf'
+        parts.append(
+            f"{data.period_start.strftime('%Y%m%d')}-"
+            f"{data.period_end.strftime('%Y%m%d')}"
+        )
+    output_path = OUTPUT_DIR / ('_'.join(parts) + '.pdf')
 
     analises = gerar_analises(data)
     story = build_story(data, generated_on, analises=analises)
