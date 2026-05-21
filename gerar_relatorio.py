@@ -26,6 +26,8 @@ from reportlab.platypus import (
     Table, TableStyle,
 )
 
+from ia_analises import AnaliseIA, gerar_analises
+
 # ── Diretorios (script-relativos, funcionam em qualquer SO) ─────────────────
 BASE_DIR   = Path(__file__).resolve().parent
 CSV_DIR    = BASE_DIR / 'csvs'
@@ -549,7 +551,7 @@ def make_page_drawer(generated_on: str):
 # 6) MONTAGEM DA STORY
 # ═══════════════════════════════════════════════════════════════════════════
 
-def build_story(d: ReportData, generated_on: str) -> list:
+def build_story(d: ReportData, generated_on: str, analises: AnaliseIA | None = None) -> list:
     story: list = []
     sp = lambda n=6: story.append(Spacer(1, n))
 
@@ -569,18 +571,22 @@ def build_story(d: ReportData, generated_on: str) -> list:
     # Resumo
     story.append(SecBar('  Resumo do Periodo', CW))
     sp(4)
-    conv_phrase = (
-        f"e {fmt_dec(t.conversions)} conversoes registradas (custo medio por "
-        f"conversao de {fmt_money(t.cost_per_conv)})"
-        if has_conv else
-        "sem conversoes registradas no periodo"
-    )
-    story.append(Paragraph(
-        f'No periodo de {d.period_text or "—"}, a campanha entregou '
-        f'{fmt_int(t.impressions)} exibicoes e gerou {fmt_int(t.clicks)} cliques, '
-        f'resultando em CTR de {fmt_pct(t.ctr_pct)}. O investimento total foi de '
-        f'{fmt_money(t.cost)}, com CPC medio de {fmt_money(t.avg_cpc)} {conv_phrase}.',
-        BOX))
+    if analises and analises.resumo_periodo:
+        resumo_txt = analises.resumo_periodo
+    else:
+        conv_phrase = (
+            f"e {fmt_dec(t.conversions)} conversoes registradas (custo medio por "
+            f"conversao de {fmt_money(t.cost_per_conv)})"
+            if has_conv else
+            "sem conversoes registradas no periodo"
+        )
+        resumo_txt = (
+            f'No periodo de {d.period_text or "—"}, a campanha entregou '
+            f'{fmt_int(t.impressions)} exibicoes e gerou {fmt_int(t.clicks)} cliques, '
+            f'resultando em CTR de {fmt_pct(t.ctr_pct)}. O investimento total foi de '
+            f'{fmt_money(t.cost)}, com CPC medio de {fmt_money(t.avg_cpc)} {conv_phrase}.'
+        )
+    story.append(Paragraph(resumo_txt, BOX))
     sp(10)
 
     # Como funciona
@@ -693,7 +699,9 @@ def build_story(d: ReportData, generated_on: str) -> list:
     # Analise
     story.append(SecBar('  Analise das palavras-chave', CW))
     sp(4)
-    if top_kw:
+    if analises and analises.analise_keywords:
+        analise = analises.analise_keywords
+    elif top_kw:
         top1 = top_kw[0]
         share = (top1.clicks / t.clicks * 100) if t.clicks else 0
         if has_conv and top1.conversions > 0:
@@ -763,7 +771,9 @@ def build_story(d: ReportData, generated_on: str) -> list:
     # Fechamento
     story.append(SecBar('  Resumo Geral do Periodo', CW, bg=RED, tc=WHITE, bc=RED))
     sp(4)
-    if has_conv:
+    if analises and analises.fechamento:
+        fechamento = analises.fechamento
+    elif has_conv:
         fechamento = (
             f"No periodo de {d.period_text}, a campanha investiu {fmt_money(t.cost)} e gerou "
             f"{fmt_dec(t.conversions)} conversoes a um custo medio de {fmt_money(t.cost_per_conv)} cada. "
@@ -813,7 +823,8 @@ def main() -> int:
         suffix = f"_{data.period_start.strftime('%Y%m%d')}-{data.period_end.strftime('%Y%m%d')}"
     output_path = OUTPUT_DIR / f'Relatorio_GoogleAds{suffix}.pdf'
 
-    story = build_story(data, generated_on)
+    analises = gerar_analises(data)
+    story = build_story(data, generated_on, analises=analises)
     doc = SimpleDocTemplate(
         str(output_path), pagesize=A4,
         leftMargin=M, rightMargin=M,
